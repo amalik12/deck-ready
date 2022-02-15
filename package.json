@@ -1,0 +1,19 @@
+{
+  "name": "deck-ready",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amalik12/deck-ready.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amalik12/deck-ready/issues"
+  },
+  "homepage": "https://github.com/amalik12/deck-ready#readme"
+}
