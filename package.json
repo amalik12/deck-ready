@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/amalik12/deck-ready/issues"
   },
-  "homepage": "https://github.com/amalik12/deck-ready#readme"
+  "homepage": "https://github.com/amalik12/deck-ready#readme",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.2.0",
+    "steam-user": "^4.20.2"
+  }
 }
