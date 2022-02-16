@@ -12,6 +12,7 @@ enum CompatibilityCategory {
   Unsupported = 1,
   Playable,
   Verified,
+  Unknown,
 }
 
 interface TestResult {
@@ -57,11 +58,15 @@ export default async function getGameDetails(
       appId: Number(appid),
       logo: app.logo,
       compatibility: {
-        category: Number(compatibility.category),
+        category: Number(compatibility?.category),
         tests: [],
       },
     };
-    for (const testName in compatibility.tests) {
+    if (!compatibility) {
+      detail.compatibility.category = CompatibilityCategory.Unknown;
+    }
+
+    for (const testName in compatibility?.tests) {
       const test = compatibility.tests[testName];
       const testResult: TestResult = {
         type: Number(test.display),
