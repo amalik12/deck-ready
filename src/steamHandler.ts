@@ -45,7 +45,7 @@ export default async function getGameDetails(
   const localization: any = await getLocalization();
 
   console.log('Requesting appinfo...');
-  const result = await client.getProductInfo(appIds, [], true); // Passing true as the third argument automatically requests access tokens, which are required for some apps
+  const result = await client.getProductInfo(appIds, [], true);
 
   const output: GameDetails[] = [];
 
