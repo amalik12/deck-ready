@@ -1,0 +1,73 @@
+.Game {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  background: #142f4f;
+  margin-bottom: 10px;
+}
+
+.game-link {
+  display: flex;
+}
+
+.verified {
+  border: 2px solid #59BF40;
+}
+
+.playable {
+  border: 2px solid #ffc82c;
+}
+
+.unsupported {
+  border: 2px solid #bd1b1b;
+}
+
+.unknown {
+  opacity: 0.7;
+}
+
+#game-logo {
+  width: 155px;
+  margin-right: 20px;
+}
+
+.status-icon {
+  width: 22px;
+  margin-right: 4px;
+}
+
+.compatibility-status {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.game-name {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.game-info {
+    min-width: 0;
+}
+.info-button {
+  font-family: 'Open Sans', sans-serif;
+  border: none;
+  background: #1f75df;
+  color: white;
+  font-size: 18px;
+  padding: 8px 10px;
+  margin-left: auto;
+  cursor: pointer;
+  transition: 0.4s;
+  white-space: nowrap;
+}
+
+.info-button:hover {
+  background: #2977d6;
+}

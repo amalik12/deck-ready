@@ -1,0 +1,158 @@
+.ReactModal__Body--open {
+  overflow: hidden;
+}
+
+.ReactModal__Overlay {
+  transition: opacity 150ms ease-in-out;
+  opacity: 0;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+.ReactModal__Content {
+  top: 50%;
+  transition: transform 150ms ease-in-out;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.ReactModal__Content--after-open {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.ReactModal__Content--before-close {
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.ReactModal__Content--before-close.confirm {
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  z-index: 900;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 800px;
+  margin: auto;
+  outline: none;
+  opacity: 1;
+  display: flex;
+  flex: 1;
+  max-height: 100%;
+  min-height: 400px;
+  flex-direction: column;
+  z-index: 901;
+}
+
+.modal.upload {
+  height: 400px;
+}
+
+.modal.dialog {
+  width: 600px;
+  min-height: 0px;
+}
+
+.modal-inner {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-block:first-child {
+  border-radius: 6px 6px 0px 0px;
+}
+
+.modal-block:last-child {
+  border-radius: 0px 0px 6px 6px;
+}
+
+.modal-single {
+  border-radius: 6px;
+}
+
+.modal-header {
+  padding: 25px;
+  background: #0d1d30;
+  margin-bottom: -1px;
+  flex: 0 0 auto;
+}
+
+.modal-title {
+  font-size: 22px;
+}
+
+.modal-body {
+  overflow: auto;
+  background: #0d1d30;
+  flex: 1 1 auto;
+  height: 100%;
+}
+
+.modal-body-content {
+  padding: 0px 25px;
+  padding-top: 10px;
+  display: flex;
+}
+
+.modal-create {
+  padding-top: 65px;
+}
+
+.modal-panel {
+  flex-grow: 1;
+  flex-basis: 60%;
+}
+
+.modal-dialog-text {
+  font-size: 18px;
+}
+
+.modal-dialog-text-bold {
+  font-weight: 500;
+}
+
+.modal-panel.left {
+  flex-basis: 40%;
+  max-width: 40%;
+  margin-right: 30px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  opacity: 0.3;
+  cursor: pointer;
+  user-select: none;
+  padding: 2px;
+  font-size: 22px;
+}
+
+.modal-close:hover {
+  opacity: 0.6;
+}
+
+.modal-footer {
+  display: flex;
+  background: #0d1d30;
+  padding: 25px;
+  flex: 0 0 auto;
+  justify-content: flex-end;
+  margin-top: -1px;
+}

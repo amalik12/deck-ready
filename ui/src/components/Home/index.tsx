@@ -1,12 +1,35 @@
-const Home = () => 
- {
-   
-   
+import {FormEventHandler, useState} from 'react';
+import './Home.css';
+import {useNavigate} from 'react-router-dom';
+
+const Home = () => {
+  const [url, setUrl] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
+    e.preventDefault();
+    if (!url) {
+      return;
+    }
+    navigate('/details', {state: {url}});
+  };
+
   return (
-  <div className="Home">
+    <div className="Home">
       <h1>Is Your Library Deck Ready?</h1>
-      <input type="text" placeholder="Enter your Steam profile URL" />
-  </div>
-  )
-}
+      <form className="input-form" onSubmit={handleSubmit}>
+        <input
+          id="profile-input"
+          type="text"
+          value={url}
+          onChange={e => setUrl(e.target.value)}
+          placeholder="Enter your Steam profile URL"
+        />
+        <button className="submit-button" type="submit">
+          Go
+        </button>
+      </form>
+    </div>
+  );
+};
 export default Home;
