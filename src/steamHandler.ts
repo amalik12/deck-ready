@@ -1,5 +1,5 @@
 import getLocalization from './localization';
-import client from './steamClient';
+import client, {loggedIn} from './steamClient';
 
 enum TestResultType {
   Info = 1,
@@ -33,24 +33,30 @@ interface GameDetails {
 export default async function getGameDetails(
   appIds: number[]
 ): Promise<GameDetails[]> {
-  client.logOn();
-  const loggedIn = new Promise<void>(resolve => {
-    client.on('loggedOn', () => {
-      resolve();
-    });
-  });
-
   await loggedIn;
+
+  const uncachedAppIds = [];
+  const cachedApps = {};
+  appIds.forEach(appId => {
+    if (
+      !client.picsCache.apps[appId]?.appinfo?.common?.steam_deck_compatibility
+    ) {
+      uncachedAppIds.push(appId);
+    } else {
+      cachedApps[appId] = client.picsCache.apps[appId];
+    }
+  });
 
   const localization: any = await getLocalization();
 
   console.log('Requesting appinfo...');
-  const result = await client.getProductInfo(appIds, [], true);
+  const result = await client.getProductInfo(uncachedAppIds, [], true);
 
   const output: GameDetails[] = [];
 
-  for (const appid in result.apps) {
-    const app = result.apps[appid].appinfo.common;
+  const allApps = {...cachedApps, ...result.apps};
+  for (const appid in allApps) {
+    const app = allApps[appid].appinfo.common;
     const compatibility = app.steam_deck_compatibility;
 
     const detail: GameDetails = {
@@ -76,7 +82,6 @@ export default async function getGameDetails(
     }
     output.push(detail);
   }
-  client.logOff();
 
   return output;
 }

@@ -12,7 +12,7 @@ app.listen(port, () => {
 
 app.use(bodyParser.json({limit: '50mb'}));
 
-app.post('/apps', async (req, res) => {
+app.post('/api/apps', async (req, res) => {
   try {
     const steam = new SteamAPI(process.env.STEAM_API_KEY);
     const id = await steam.resolve(req.body.url);
