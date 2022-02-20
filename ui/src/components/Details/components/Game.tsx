@@ -1,14 +1,13 @@
-import React, {useState} from 'react';
-import {CompatibilityCategory, GameDetails} from '../../../api';
-import Modal from '../../Modal/Modal';
+import React from 'react';
+import {CompatibilityCategory, GameDetails, TestResult} from '../../../api';
 import './Game.css';
-import TestResult from './TestResult';
 
 interface GameProps {
   game: GameDetails;
+  setTests: (tests: TestResult[]) => void;
 }
 
-const Game: React.FC<GameProps> = ({game}) => {
+const Game: React.FC<GameProps> = ({game, setTests}) => {
   let statusIcon;
   switch (game.compatibility.category) {
     case CompatibilityCategory.Verified:
@@ -27,21 +26,9 @@ const Game: React.FC<GameProps> = ({game}) => {
       break;
   }
 
-  const [isOpen, setIsOpen] = useState(false);
-
   const categoryName = CompatibilityCategory[game.compatibility.category];
-
-  console.log(isOpen);
-
   return (
     <div className={`Game ${categoryName.toLowerCase()}`}>
-      <Modal isOpen={isOpen} dismiss={() => setIsOpen(false)}>
-        <div className="modal-body">
-          {game.compatibility.tests.map(test => (
-            <TestResult test={test} />
-          ))}
-        </div>
-      </Modal>
       <a
         className="game-link"
         href={`https:/store.steampowered.com/app/${game.appId}/`}
@@ -59,7 +46,10 @@ const Game: React.FC<GameProps> = ({game}) => {
           {categoryName}
         </div>
       </div>
-      <button className="info-button" onClick={() => setIsOpen(true)}>
+      <button
+        className="info-button"
+        onClick={() => setTests(game.compatibility.tests)}
+      >
         More info
       </button>
     </div>
