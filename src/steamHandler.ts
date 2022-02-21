@@ -106,7 +106,7 @@ export default async function getGameDetails(
       };
       detail.compatibility.tests.push(testResult);
     }
-    redis.setEx(`app:${appid}`, 43200, JSON.stringify(detail));
+    redis.setEx(`app:${appid}`, 7200, JSON.stringify(detail));
     output.push(detail);
   }
 
