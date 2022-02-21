@@ -39,6 +39,7 @@ app.post('/api/apps', async (req, res) => {
         `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=${process.env.STEAM_API_KEY}&steamid=${id}&include_appinfo=1&include_played_free_games=1`
       );
       games = (await response.json()).response.games;
+      // Games is undefined if profile or library is hidden
       redis.setEx(`library:${id}`, 172800, JSON.stringify(games));
     }
 
