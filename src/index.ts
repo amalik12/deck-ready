@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import SteamAPI from 'steamapi';
 import getGameDetails from './steamHandler';
 import fetch from 'node-fetch';
+import redis from './redisClient';
 
 const path = require('path');
 
@@ -19,13 +20,27 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 app.post('/api/apps', async (req, res) => {
   try {
-    const steam = new SteamAPI(process.env.STEAM_API_KEY);
-    const id = await steam.resolve(req.body.url);
-    const response = await fetch(
-      `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=${process.env.STEAM_API_KEY}&steamid=${id}&include_appinfo=1&include_played_free_games=1`
-    );
+    let id;
+    const cachedId = await redis.get(`id:${req.body.url}`);
+    if (cachedId) {
+      id = Number(cachedId);
+    } else {
+      const steam = new SteamAPI(process.env.STEAM_API_KEY);
+      id = await steam.resolve(req.body.url);
+      redis.setEx(`id:${req.body.url}`, 345600, id);
+    }
 
-    const games = (await response.json()).response.games;
+    let games;
+    const cachedGames = await redis.get(`library:${id}`);
+    if (cachedGames) {
+      games = JSON.parse(cachedGames);
+    } else {
+      const response = await fetch(
+        `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=${process.env.STEAM_API_KEY}&steamid=${id}&include_appinfo=1&include_played_free_games=1`
+      );
+      games = (await response.json()).response.games;
+      redis.setEx(`library:${id}`, 172800, JSON.stringify(games));
+    }
 
     const playtimeMap: Map<number, number> = new Map();
     const appIds: number[] = games.map(game => {
@@ -42,6 +57,6 @@ app.post('/api/apps', async (req, res) => {
   }
 });
 
-app.get('/*', function (req, res) {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
