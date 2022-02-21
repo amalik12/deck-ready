@@ -47,17 +47,27 @@ export default async function getGameDetails(
   await loggedIn;
 
   const uncachedAppIds = [];
+  const cachedApps: GameDetails[] = [];
 
   const keys = appIds.map(appId => `app:${appId}`);
   const results = await redis.mGet(keys);
-  const cachedApps = results.filter(result => result !== null).map(result => JSON.parse(result));
+  results.forEach((result, index) => {
+    if (result === null) {
+      uncachedAppIds.push(appIds[index]);
+    } else {
+      cachedApps.push(JSON.parse(result));
+    }
+  });
 
+  const output: GameDetails[] = [...cachedApps];
+
+  if (!uncachedAppIds.length) {
+    return output.sort((a, b) => b.playtime - a.playtime);
+  }
 
   const localization: any = await getLocalization();
 
   const result = await client.getProductInfo(uncachedAppIds, [], true);
-
-  const output: GameDetails[] = [...cachedApps];
 
   for (const appid in result.apps) {
     const app = result.apps[appid].appinfo.common;
@@ -96,7 +106,7 @@ export default async function getGameDetails(
       };
       detail.compatibility.tests.push(testResult);
     }
-    redis.set(`app:${appid}`, JSON.stringify(detail));
+    redis.setEx(`app:${appid}`, 43200, JSON.stringify(detail));
     output.push(detail);
   }
 
