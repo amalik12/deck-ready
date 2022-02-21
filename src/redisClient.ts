@@ -11,4 +11,3 @@ const redis = createClient({
 })();
 
 export default redis;
-
