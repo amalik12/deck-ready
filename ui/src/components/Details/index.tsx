@@ -25,6 +25,10 @@ const Details = () => {
   const [compatibility, setCompatibility] = useState<GameCompatibility>();
   const [gameName, setGameName] = useState('');
   const allGames = useRef<GameDetails[]>([]);
+  const verfiedCount = useRef(0);
+  const playableCount = useRef(0);
+  const unsupportedCount = useRef(0);
+  const unknownCount = useRef(0);
 
   const sortGames = (games: GameDetails[]) => {
     const verified = [];
@@ -49,7 +53,38 @@ const Details = () => {
           break;
       }
     }
-    return [...verified, ...playable, ...unsupported, ...unknown];
+    verfiedCount.current = verified.length;
+    playableCount.current = playable.length;
+    unsupportedCount.current = unsupported.length;
+    unknownCount.current = unknown.length;
+
+    const makeDummyGame = (category: CompatibilityCategory): GameDetails => ({
+      appId: -1,
+      logo: '',
+      name: '',
+      compatibility: {
+        category: category,
+        description: '',
+        test_timestamp: 0,
+        tests: [],
+        recommended_build: GameBuild.Proton,
+      },
+    });
+    return [
+      makeDummyGame(CompatibilityCategory.Verified),
+      ...verified,
+      makeDummyGame(CompatibilityCategory.Playable),
+      ...playable,
+      makeDummyGame(CompatibilityCategory.Unsupported),
+      ...unsupported,
+      makeDummyGame(CompatibilityCategory.Unknown),
+      ...unknown,
+    ];
+  };
+
+  const jumpToSection = (section: string) => {
+    const element = document.getElementById(section + '-games');
+    element?.scrollIntoView({behavior: 'smooth'});
   };
 
   useEffect(() => {
@@ -84,7 +119,7 @@ const Details = () => {
         const stripped = stripName(game.name);
 
         const queryStripped = stripName(gameName);
-        if (stripped.startsWith(queryStripped)) {
+        if (game.appId === -1 || stripped.startsWith(queryStripped)) {
           newList.push(game);
         }
       }
@@ -162,20 +197,127 @@ const Details = () => {
               )}
             </div>
           </Modal>
-          <input
-            className="input search"
-            type="text"
-            value={gameName}
-            onChange={e => setGameName(e.target.value)}
-            placeholder="Search for a game"
-          />
-          {games.map(game => (
-            <Game
-              key={game.appId}
-              game={game}
-              setCompatibility={setCompatibility}
+          <h1 className="summary-text">{`${
+            verfiedCount.current + playableCount.current
+          } games in your library are confirmed to be playable on the Steam Deck.`}</h1>
+          <div className="result-graph">
+            <div
+              className="graph-section item-verified"
+              onClick={() => jumpToSection('verified')}
+              style={{
+                width:
+                  (verfiedCount.current / allGames.current.length) * 100 + '%',
+              }}
             />
-          ))}
+            <div
+              className="graph-section item-playable"
+              onClick={() => jumpToSection('playable')}
+              style={{
+                width:
+                  (playableCount.current / allGames.current.length) * 100 + '%',
+              }}
+            />
+            <div
+              className="graph-section item-unsupported"
+              onClick={() => jumpToSection('unsupported')}
+              style={{
+                width:
+                  (unsupportedCount.current / allGames.current.length) * 100 +
+                  '%',
+              }}
+            />
+            <div
+              className="graph-section item-unknown"
+              onClick={() => jumpToSection('unknown')}
+            />
+          </div>
+          <div className="result-details">
+            <div
+              className="result-item compatibility-status"
+              onClick={() => jumpToSection('verified')}
+            >
+              <div className="result-icon item-verified" />
+              <div className="result-item-name">
+                Verified{' '}
+                {(
+                  verfiedCount.current / allGames.current.length
+                ).toLocaleString(undefined, {
+                  style: 'percent',
+                  maximumFractionDigits: 2,
+                })}
+              </div>
+            </div>
+            <div
+              className="result-item compatibility-status"
+              onClick={() => jumpToSection('playable')}
+            >
+              <div className="result-icon item-playable" />
+              <div className="result-item-name">
+                Playable{' '}
+                {(
+                  playableCount.current / allGames.current.length
+                ).toLocaleString(undefined, {
+                  style: 'percent',
+                  maximumFractionDigits: 2,
+                })}
+              </div>
+            </div>
+            <div
+              className="result-item compatibility-status"
+              onClick={() => jumpToSection('unsupported')}
+            >
+              <div className="result-icon item-unsupported" />
+              <div className="result-item-name">
+                Unsupported{' '}
+                {(
+                  unsupportedCount.current / allGames.current.length
+                ).toLocaleString(undefined, {
+                  style: 'percent',
+                  maximumFractionDigits: 2,
+                })}
+              </div>
+            </div>
+            <div
+              className="result-item compatibility-status"
+              onClick={() => jumpToSection('unknown')}
+            >
+              <div className="result-icon item-unknown" />
+              <div className="result-item-name">
+                Unknown{' '}
+                {(
+                  unknownCount.current / allGames.current.length
+                ).toLocaleString(undefined, {
+                  style: 'percent',
+                  maximumFractionDigits: 2,
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="library-filter">
+            <i className="search-icon fa-solid fa-magnifying-glass" />
+            <input
+              className="input search"
+              type="text"
+              value={gameName}
+              onChange={e => setGameName(e.target.value)}
+              placeholder="Search for a game"
+            />
+          </div>
+          {games.map(game =>
+            game.appId !== -1 ? (
+              <Game
+                key={game.appId}
+                game={game}
+                setCompatibility={setCompatibility}
+              />
+            ) : (
+              <div
+                id={`${CompatibilityCategory[
+                  game.compatibility.category
+                ].toLowerCase()}-games`}
+              />
+            )
+          )}
         </>
       )}
     </div>

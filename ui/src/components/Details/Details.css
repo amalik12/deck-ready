@@ -20,9 +20,86 @@
   margin-bottom: 20px;
 }
 
+.library-filter {
+  background: #20354f;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.search-icon {
+  margin-left: 15px;
+  font-size: 18px;
+}
+
 .search {
   background: #20354f;
   color: white;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.summary-text {
+  font-weight: 800;
+  font-size: 40px;
+}
+
+.result-graph {
+  display: flex;
+  height: 46px;
+  background: #314252;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.graph-section {
+  cursor: pointer;
+}
+
+.item-verified {
+  background: #59BF40;
+}
+
+.item-playable {
+  background: #ffc82c;
+}
+
+.item-unsupported {
+  background: #bd1b1b;
+}
+
+.item-unknown {
+  flex-grow: 1;
+}
+  
+.result-details {
+  margin-bottom: 25px;
+  display: flex;
+}
+
+.result-item {
+  margin-right: 15px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.result-item-name {
+  font-size: 18px;
+}
+
+.result-icon {
+  display: inline-block;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.result-icon.item-unknown {
+  background: #314252;
+  flex-grow: 0;
 }
 
 .sk-folding-cube {

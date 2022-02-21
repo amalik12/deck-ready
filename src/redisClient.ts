@@ -10,4 +10,9 @@ const redis = createClient({
   await redis.connect();
 })();
 
+// const redis = {
+//   get: key => null,
+//   mGet: keys => keys.map(key => redis.get(key)),
+//   setEx: (key, time, value) => undefined,
+// };
 export default redis;
