@@ -20,6 +20,7 @@ const Home = () => {
       <form className="input-form" onSubmit={handleSubmit}>
         <input
           id="profile-input"
+          className="input"
           type="text"
           value={url}
           onChange={e => setUrl(e.target.value)}

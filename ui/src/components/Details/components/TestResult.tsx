@@ -1,4 +1,5 @@
 import {TestResult as TestResultInterface, TestResultType} from '../../../api';
+import './TestResult.css';
 
 const TestResult: React.FC<{test: TestResultInterface}> = ({test}) => {
   let testIcon;
@@ -18,9 +19,15 @@ const TestResult: React.FC<{test: TestResultInterface}> = ({test}) => {
       break;
   }
   return (
-    <div className="test-result">
+    <div className="TestResult">
       {testIcon && <img className="test-icon" src={testIcon} />}
-      <span className="result-description">{test.description}</span>
+      <span
+        className={`result-description result-${TestResultType[
+          test.type
+        ].toLowerCase()}`}
+      >
+        {test.description}
+      </span>
     </div>
   );
 };

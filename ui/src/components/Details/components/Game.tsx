@@ -1,31 +1,17 @@
 import React from 'react';
-import {CompatibilityCategory, GameDetails, TestResult} from '../../../api';
+import {
+  CompatibilityCategory,
+  GameCompatibility,
+  GameDetails,
+} from '../../../api';
 import './Game.css';
 
 interface GameProps {
   game: GameDetails;
-  setTests: (tests: TestResult[]) => void;
+  setCompatibility: (compatibility: GameCompatibility) => void;
 }
 
-const Game: React.FC<GameProps> = ({game, setTests}) => {
-  let statusIcon;
-  switch (game.compatibility.category) {
-    case CompatibilityCategory.Verified:
-      statusIcon = '/verified.svg';
-      break;
-    case CompatibilityCategory.Playable:
-      statusIcon = '/playable.svg';
-      break;
-    case CompatibilityCategory.Unsupported:
-      statusIcon = '/unsupported.svg';
-      break;
-    case CompatibilityCategory.Unknown:
-      statusIcon = '/unknown.svg';
-      break;
-    default:
-      break;
-  }
-
+const Game: React.FC<GameProps> = ({game, setCompatibility}) => {
   const categoryName = CompatibilityCategory[game.compatibility.category];
   return (
     <div className={`Game ${categoryName.toLowerCase()}`}>
@@ -42,13 +28,16 @@ const Game: React.FC<GameProps> = ({game, setTests}) => {
       <div className="game-info">
         <div className="game-name">{game.name}</div>
         <div className="compatibility-status">
-          <img className="status-icon" src={statusIcon} />
+          <img
+            className="status-icon"
+            src={`/${categoryName.toLowerCase()}.svg`}
+          />
           {categoryName}
         </div>
       </div>
       <button
         className="info-button"
-        onClick={() => setTests(game.compatibility.tests)}
+        onClick={() => setCompatibility(game.compatibility)}
       >
         More info
       </button>

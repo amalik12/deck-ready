@@ -16,6 +16,9 @@ const Modal: React.FC<ModalProps> = props => {
       closeTimeoutMS={150}
       onRequestClose={props.dismiss}
     >
+      {props.dismiss && (
+        <i onClick={props.dismiss} className="modal-close fas fa-times"></i>
+      )}
       {props.children}
     </ReactModal>
   );

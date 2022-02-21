@@ -17,14 +17,24 @@ export interface TestResult {
   description: string;
 }
 
+export enum GameBuild {
+  Native = 'native',
+  Proton = 'proton-stable',
+}
+
+export interface GameCompatibility {
+  category: CompatibilityCategory;
+  description: string;
+  tests: TestResult[];
+  recommended_build: GameBuild;
+  test_timestamp: number;
+}
+
 export interface GameDetails {
   name: string;
   appId: number;
   logo: string;
-  compatibility: {
-    category: CompatibilityCategory;
-    tests: TestResult[];
-  };
+  compatibility: GameCompatibility;
 }
 
 export default async function getGameDetails(

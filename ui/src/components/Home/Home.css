@@ -3,7 +3,7 @@
   padding-top: 30vh;
 }
 
-#profile-input {
+.input {
   font-size: 22px;
   padding: 14px;
   border-radius: 5px 0 0 5px;

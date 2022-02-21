@@ -1,11 +1,38 @@
+.modal-header .compatibility-status {
+  margin-right: 40px;
+}
+
+.test-info {
+  display: flex;
+  margin-top: 25px;
+}
+
+.test-stat {
+  margin-right: 12px;
+}
+
+.stat-name {
+  font-weight: bold;
+}
+
+.category-description {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.search {
+  background: #20354f;
+  color: white;
+}
+
 .sk-folding-cube {
   margin: 20px auto;
   margin-top: 40vh;
   width: 40px;
   height: 40px;
   position: relative;
-  -webkit-transform: rotateZ(45deg) scale(3);
-          transform: rotateZ(45deg) scale(3);
+  -webkit-transform: rotateZ(45deg) scale(2);
+          transform: rotateZ(45deg) scale(2);
 }
 
 .sk-folding-cube .sk-cube {

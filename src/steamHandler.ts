@@ -1,4 +1,5 @@
 import getLocalization from './localization';
+import redis from './redisClient';
 import client, {loggedIn} from './steamClient';
 
 enum TestResultType {
@@ -15,6 +16,11 @@ enum CompatibilityCategory {
   Unknown,
 }
 
+enum GameBuild {
+  Native = 'native',
+  Proton = 'proton-stable',
+}
+
 interface TestResult {
   type: TestResultType;
   description: string;
@@ -24,52 +30,62 @@ interface GameDetails {
   name: string;
   appId: number;
   logo: string;
+  playtime: number;
   compatibility: {
     category: CompatibilityCategory;
+    description: string;
     tests: TestResult[];
+    recommended_build: GameBuild;
+    test_timestamp: number;
   };
 }
 
 export default async function getGameDetails(
-  appIds: number[]
+  appIds: number[],
+  playtimeMap: Map<number, number>
 ): Promise<GameDetails[]> {
   await loggedIn;
 
   const uncachedAppIds = [];
-  const cachedApps = {};
-  appIds.forEach(appId => {
-    if (
-      !client.picsCache.apps[appId]?.appinfo?.common?.steam_deck_compatibility
-    ) {
-      uncachedAppIds.push(appId);
-    } else {
-      cachedApps[appId] = client.picsCache.apps[appId];
-    }
-  });
+
+  const keys = appIds.map(appId => `app:${appId}`);
+  const results = await redis.mGet(keys);
+  const cachedApps = results.filter(result => result !== null).map(result => JSON.parse(result));
+
 
   const localization: any = await getLocalization();
 
-  console.log('Requesting appinfo...');
   const result = await client.getProductInfo(uncachedAppIds, [], true);
 
-  const output: GameDetails[] = [];
+  const output: GameDetails[] = [...cachedApps];
 
-  const allApps = {...cachedApps, ...result.apps};
-  for (const appid in allApps) {
-    const app = allApps[appid].appinfo.common;
+  for (const appid in result.apps) {
+    const app = result.apps[appid].appinfo.common;
+
     const compatibility = app.steam_deck_compatibility;
 
     const detail: GameDetails = {
       name: app.name,
       appId: Number(appid),
       logo: app.logo,
+      playtime: playtimeMap.get(Number(appid)),
       compatibility: {
         category: Number(compatibility?.category),
+        description:
+          localization[
+            `SteamDeckVerified_DescriptionHeader_${
+              CompatibilityCategory[compatibility?.category]
+            }`
+          ],
         tests: [],
+        recommended_build: compatibility?.configuration?.recommended_runtime,
+        test_timestamp: compatibility?.test_timestamp,
       },
     };
     if (!compatibility) {
       detail.compatibility.category = CompatibilityCategory.Unknown;
+      detail.compatibility.description =
+        "This game has not yet undergone Valve's compatibility testing.";
     }
 
     for (const testName in compatibility?.tests) {
@@ -80,10 +96,11 @@ export default async function getGameDetails(
       };
       detail.compatibility.tests.push(testResult);
     }
+    redis.set(`app:${appid}`, JSON.stringify(detail));
     output.push(detail);
   }
 
-  return output;
+  return output.sort((a, b) => b.playtime - a.playtime);
 }
 
 /**
