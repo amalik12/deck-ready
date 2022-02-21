@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN apt-get update
 RUN npm install
 RUN mkdir ui
-COPY ui/package*.json ./ui
+COPY ui/package*.json ./ui/
 WORKDIR /usr/src/app/ui
 RUN npm install
 COPY ./ui ./
