@@ -14,7 +14,7 @@ WORKDIR /usr/src/app
 COPY ./src ./src
 COPY tsconfig.json ./
 RUN npm run compile
-COPY ./ui/build ./dist/build
+RUN cp -r ./ui/build/ ./dist/
 RUN rm -rf /usr/src/app/ui
 EXPOSE 4000
 CMD npm start
