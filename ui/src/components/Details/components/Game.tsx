@@ -19,11 +19,15 @@ const Game: React.FC<GameProps> = ({game, setCompatibility}) => {
         className="game-link"
         href={`https:/store.steampowered.com/app/${game.appId}/`}
       >
-        <img
-          id="game-logo"
-          loading="lazy"
-          src={`https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appId}/header.jpg`}
-        />
+        {game.logo ? (
+          <img
+            id="game-logo"
+            loading="lazy"
+            src={`https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/${game.appId}/${game.logo}.jpg`}
+          />
+        ) : (
+          <div className="logo-placeholder" />
+        )}
       </a>
       <div className="game-info">
         <div className="game-name">{game.name}</div>

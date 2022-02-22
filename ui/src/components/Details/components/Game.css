@@ -31,6 +31,10 @@
   margin-right: 20px;
 }
 
+.logo-placeholder {
+  width: 175px;
+}
+
 .status-icon {
   width: 22px;
   margin-right: 4px;
@@ -84,6 +88,10 @@
     display: none;
   }
   
+  .logo-placeholder {
+    display: none;
+  }
+
   .game-name {
     font-size: 16px;
   }
