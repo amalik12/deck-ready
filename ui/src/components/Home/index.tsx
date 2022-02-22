@@ -1,10 +1,16 @@
 import {FormEventHandler, useState} from 'react';
 import './Home.css';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
+interface HomeState {
+  error: string | null;
+}
 const Home = () => {
   const [url, setUrl] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location?.state as HomeState;
+  const error = state?.error;
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
     e.preventDefault();
@@ -35,6 +41,16 @@ const Home = () => {
         Sign in with <i className="steam-icon fa-brands fa-steam-symbol" />
         Steam
       </a>
+      {error && (
+        <div className="error-text">
+          {error +
+            ' Make sure that "Game Details" is set to "Public" in your Steam '}
+          <a href="https://steamcommunity.com/my/edit/settings">
+            privacy settings.
+          </a>
+        </div>
+      )}
+      <footer>This site is not affiliated with Steam or Valve.</footer>
     </div>
   );
 };

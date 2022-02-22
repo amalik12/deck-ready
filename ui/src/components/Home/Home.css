@@ -71,6 +71,22 @@
   font-size: 24px;
   margin-right: 5px;
 }
+
+.error-text {
+  color: red;
+  margin-top: 15px;
+}
+
+footer {
+  opacity: 0.5;
+  margin-top: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  text-align: center;
+}
+
 @media (max-width: 700px) {
   .input {
     font-size: 18px;

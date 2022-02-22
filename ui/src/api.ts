@@ -45,5 +45,8 @@ export default async function getGameDetails(
     body: JSON.stringify({url}),
     headers: {'Content-Type': 'application/json'},
   });
+  if (!res.ok) {
+    throw new Error('Problem retrieving game details');
+  }
   return res.json();
 }

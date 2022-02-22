@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import getGameDetails, {
   CompatibilityCategory,
   GameBuild,
@@ -28,6 +28,7 @@ const Details = () => {
   const playableCount = useRef(0);
   const unsupportedCount = useRef(0);
   const unknownCount = useRef(0);
+  const navigate = useNavigate();
 
   const sortGames = (games: GameDetails[]) => {
     const verified = [];
@@ -89,10 +90,17 @@ const Details = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const data = await getGameDetails(url);
-      allGames.current = sortGames(data);
-      setGames(allGames.current);
-      setLoading(false);
+      try {
+        const data = await getGameDetails(url);
+        allGames.current = sortGames(data);
+        setGames(allGames.current);
+        setLoading(false);
+      } catch (error) {
+        navigate('/', {
+          state: {error: 'Trouble retriving your profile.'},
+          replace: true,
+        });
+      }
     };
     fetchData();
   }, [url]);

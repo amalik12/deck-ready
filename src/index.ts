@@ -82,6 +82,8 @@ app.post('/api/apps', async (req, res) => {
       // Games is undefined if profile or library is hidden
       if (games) {
         redis.setEx(`library:${id}`, 172800, JSON.stringify(games));
+      } else {
+        return res.sendStatus(401);
       }
     }
 
@@ -93,10 +95,10 @@ app.post('/api/apps', async (req, res) => {
 
     const result = await getGameDetails(appIds, playtimeMap);
 
-    res.send(result);
+    return res.send(result);
   } catch (error) {
     console.error(error);
-    res.sendStatus(400);
+    return res.sendStatus(500);
   }
 });
 
