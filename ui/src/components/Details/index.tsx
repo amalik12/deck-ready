@@ -6,9 +6,8 @@ import getGameDetails, {
   GameCompatibility,
   GameDetails,
 } from '../../api';
-import Modal from '../Modal/Modal';
+import CompatibilityModal from './components/CompatibilityModal';
 import Game from './components/Game';
-import TestResult from './components/TestResult';
 import './Details.css';
 
 interface DetailsState {
@@ -127,9 +126,6 @@ const Details = () => {
     }
   }, [gameName]);
 
-  const categoryName = compatibility
-    ? CompatibilityCategory[compatibility.category]
-    : 'Unknown';
   return (
     <div className="Details">
       {loading ? (
@@ -141,62 +137,14 @@ const Details = () => {
         </div>
       ) : (
         <>
-          <Modal
-            isOpen={isOpen}
-            dismiss={() => {
+          <CompatibilityModal
+            compatibility={compatibility as GameCompatibility}
+            dismissFn={() => {
               setIsOpen(false);
               setCompatibility(undefined);
             }}
-          >
-            <div className="modal-header">
-              <span className="modal-title">Compatibility</span>
-              <div className="compatibility-status">
-                <img
-                  className="status-icon"
-                  src={`/${categoryName.toLowerCase()}.svg`}
-                />
-                {categoryName}
-              </div>
-            </div>
-            <div className="modal-body">
-              <div className="category-description">
-                {compatibility?.description}
-              </div>
-              {compatibility && (
-                <>
-                  {compatibility?.tests.map((test, index) => (
-                    <TestResult key={index} test={test} />
-                  ))}
-                  <div className="test-info">
-                    {compatibility.test_timestamp && (
-                      <div className="test-stat">
-                        <span className="stat-name">Tested on: </span>
-                        <span className="stat-value">
-                          {new Intl.DateTimeFormat(undefined, {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                          }).format(
-                            new Date(compatibility.test_timestamp * 1000)
-                          )}
-                        </span>
-                      </div>
-                    )}
-                    {compatibility.recommended_build && (
-                      <div className="test-stat">
-                        <span className="stat-name">Tested version: </span>
-                        <span className="stat-value">
-                          {compatibility.recommended_build === GameBuild.Native
-                            ? 'Native Linux'
-                            : 'Proton'}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
-          </Modal>
+            isOpen={isOpen}
+          />
           <h1 className="summary-text">{`${
             verfiedCount.current + playableCount.current
           } games in your library are confirmed to be playable on the Steam Deck.`}</h1>

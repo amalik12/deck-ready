@@ -1,25 +1,3 @@
-.modal-header .compatibility-status {
-  margin-right: 40px;
-}
-
-.test-info {
-  display: flex;
-  margin-top: 25px;
-}
-
-.test-stat {
-  margin-right: 12px;
-}
-
-.stat-name {
-  font-weight: bold;
-}
-
-.category-description {
-  font-size: 20px;
-  margin-bottom: 20px;
-}
-
 .library-filter {
   background: #20354f;
   display: flex;
@@ -77,6 +55,7 @@
 .result-details {
   margin-bottom: 25px;
   display: flex;
+  flex-wrap: wrap;
 }
 
 .result-item {
@@ -110,6 +89,17 @@
   position: relative;
   -webkit-transform: rotateZ(45deg) scale(2);
           transform: rotateZ(45deg) scale(2);
+}
+
+
+@media (max-width: 700px) {
+  .summary-text {
+    font-size: 30px;
+  }
+
+  .result-item-name {
+    font-size: 16px;
+  }
 }
 
 .sk-folding-cube .sk-cube {

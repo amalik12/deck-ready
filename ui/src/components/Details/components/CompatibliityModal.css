@@ -1,0 +1,29 @@
+.modal-header .compatibility-status {
+  margin-right: 40px;
+}
+
+.test-info {
+  display: flex;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+.test-stat {
+  margin-right: 12px;
+}
+
+.stat-name {
+  font-weight: bold;
+}
+
+.category-description {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 700px) {
+  .modal-header .compatibility-status {
+    margin-right: 30px;
+    margin-left: 30px;
+  }
+}

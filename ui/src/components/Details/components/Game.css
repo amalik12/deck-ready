@@ -72,3 +72,30 @@
 .info-button:hover {
   background: #1c80fa;
 }
+
+@media (max-width: 700px) {
+  .Game {
+  padding: 10px 15px;
+
+  }
+
+  #game-logo {
+    display: none;
+  }
+  
+  .game-name {
+    font-size: 16px;
+  }
+
+  .info-button {
+    font-size: 14px;
+  }
+
+  .compatibility-status {
+    font-size: 14px;
+  }
+
+  .status-icon {
+    width: 16px;
+  }
+}
