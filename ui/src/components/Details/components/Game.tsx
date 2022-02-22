@@ -17,13 +17,13 @@ const Game: React.FC<GameProps> = ({game, setCompatibility}) => {
     <div className={`Game ${categoryName.toLowerCase()}`}>
       <a
         className="game-link"
-        href={`https:/store.steampowered.com/app/${game.appId}/`}
+        href={`https://store.steampowered.com/app/${game.appId}/`}
       >
         {game.logo ? (
           <img
             id="game-logo"
             loading="lazy"
-            src={`https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/${game.appId}/${game.logo}.jpg`}
+            src={`https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appId}/header.jpg`}
           />
         ) : (
           <div className="logo-placeholder" />
