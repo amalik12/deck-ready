@@ -4,6 +4,8 @@ import SteamAPI from 'steamapi';
 import getGameDetails from './steamHandler';
 import fetch from 'node-fetch';
 import redis from './redisClient';
+import passport from 'passport';
+import Steam from 'passport-steam';
 
 const path = require('path');
 
@@ -17,6 +19,44 @@ app.listen(port, () => {
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(express.static(path.join(__dirname, 'build')));
+
+passport.use(
+  new Steam.Strategy(
+    {
+      returnURL: process.env.STEAM_REALM + '/auth/steam/callback',
+      realm: process.env.STEAM_REALM,
+      apiKey: process.env.STEAM_API_KEY,
+    },
+    (identifier, profile, done) => {
+      return done(null, profile);
+    }
+  )
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+app.get(
+  '/auth/steam',
+  passport.authenticate('steam', {prompt: 'consent'}),
+  (req, res) => {
+    // The request will be redirected to Steam for authentication, so
+    // this function will not be called.
+  }
+);
+
+app.get(
+  '/auth/steam/callback',
+  passport.authenticate('steam', {prompt: 'consent'}),
+  (req, res) => {
+    res.redirect('/signin/' + (req.user as any).id);
+  }
+);
 
 app.post('/api/apps', async (req, res) => {
   try {

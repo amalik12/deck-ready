@@ -46,6 +46,31 @@
   background: #2977d6;
 }
 
+.or-text {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.steam-button {
+  text-decoration: none;
+  color: white;
+   background: rgba(20,109,160,1);
+  /* background: linear-gradient(90deg, rgba(16,34,82,1) 0%, rgba(20,109,160,1) 100%);  */
+  font-size: 20px;
+  padding: 10px 22px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-block;
+  vertical-align: middle;
+  
+}
+
+.steam-icon {
+  font-size: 24px;
+  margin-right: 5px;
+}
 @media (max-width: 700px) {
   .input {
     font-size: 18px;

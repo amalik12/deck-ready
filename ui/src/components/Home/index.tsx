@@ -30,6 +30,11 @@ const Home = () => {
           Go
         </button>
       </form>
+      <div className="or-text">or</div>
+      <a href="/auth/steam" className="steam-button">
+        Sign in with <i className="steam-icon fa-brands fa-steam-symbol" />
+        Steam
+      </a>
     </div>
   );
 };
