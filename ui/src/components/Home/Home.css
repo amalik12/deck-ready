@@ -57,7 +57,7 @@
   text-decoration: none;
   color: white;
    background: rgba(20,109,160,1);
-  /* background: linear-gradient(90deg, rgba(16,34,82,1) 0%, rgba(20,109,160,1) 100%);  */
+  background: linear-gradient(90deg, rgba(20,109,160,1) 0%, rgb(20, 42, 104) 100%); 
   font-size: 20px;
   padding: 10px 22px;
   border-radius: 20px;
