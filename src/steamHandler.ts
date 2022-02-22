@@ -75,7 +75,7 @@ export default async function getGameDetails(
 
   for (const appid in result.apps) {
     const app = result.apps[appid].appinfo.common;
-    if (!app.header_image?.english) continue;
+    if (!app?.header_image?.english) continue;
 
     const compatibility = app.steam_deck_compatibility;
 
