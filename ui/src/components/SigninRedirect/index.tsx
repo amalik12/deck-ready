@@ -2,7 +2,6 @@ import {Navigate, useParams} from 'react-router-dom';
 
 const SigninRedirect = () => {
   const {id} = useParams();
-  console.log('siginin');
 
   return (
     <Navigate
