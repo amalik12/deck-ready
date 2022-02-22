@@ -59,6 +59,10 @@ export default async function getGameDetails(
     }
   });
 
+  cachedApps.forEach(app => {
+    app.playtime = playtimeMap.get(app.appId) || 0;
+  });
+
   const output: GameDetails[] = [...cachedApps];
 
   if (!uncachedAppIds.length) {
