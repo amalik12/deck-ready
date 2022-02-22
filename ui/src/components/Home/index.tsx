@@ -43,11 +43,12 @@ const Home = () => {
       </a>
       {error && (
         <div className="error-text">
-          {error +
-            ' Make sure that "Game Details" is set to "Public" in your Steam '}
-          <a href="https://steamcommunity.com/my/edit/settings">
-            privacy settings.
-          </a>
+          {error}
+          {error.includes('Public') && (
+            <a href="https://steamcommunity.com/my/edit/settings">
+              privacy settings.
+            </a>
+          )}
         </div>
       )}
       <footer>This site is not affiliated with Steam or Valve.</footer>

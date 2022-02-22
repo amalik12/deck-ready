@@ -113,18 +113,3 @@ export default async function getGameDetails(
 
   return output.sort((a, b) => b.playtime - a.playtime);
 }
-
-/**
- * Test ratings:
- * 1 - Info
- * 4 - Verified
- * 2 - Unsupported
- * 3 - Playable
- */
-
-/**
- * Categories:
- * 1 - Unsupported
- * 2 - Playable
- * 3 - Verified
- */

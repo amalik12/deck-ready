@@ -46,7 +46,15 @@ export default async function getGameDetails(
     headers: {'Content-Type': 'application/json'},
   });
   if (!res.ok) {
-    throw new Error('Problem retrieving game details');
+    if (res.status === 401)
+      throw new Error(
+        'Problem retrieving game details. Make sure that "Game Details" is set to "Public" in your Steam '
+      );
+    if (res.status === 400)
+      throw new Error(
+        "Invalid URL. Make sure that the URL starts with 'https://steamcommunity.com/'."
+      );
+    throw new Error('Problem retrieving game details. Please try again later.');
   }
   return res.json();
 }

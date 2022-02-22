@@ -97,7 +97,7 @@ const Details = () => {
         setLoading(false);
       } catch (error) {
         navigate('/', {
-          state: {error: 'Trouble retriving your profile.'},
+          state: {error: (error as any).message},
           replace: true,
         });
       }

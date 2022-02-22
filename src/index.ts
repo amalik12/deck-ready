@@ -98,6 +98,10 @@ app.post('/api/apps', async (req, res) => {
     return res.send(result);
   } catch (error) {
     console.error(error);
+    if (error.message === 'Invalid format') {
+      return res.sendStatus(400);
+    }
+
     return res.sendStatus(500);
   }
 });
