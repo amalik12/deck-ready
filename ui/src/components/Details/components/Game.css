@@ -67,6 +67,7 @@
   cursor: pointer;
   transition: 0.4s;
   white-space: nowrap;
+  border-radius: 4px;
 }
 
 .info-button:hover {
