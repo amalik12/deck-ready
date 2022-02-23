@@ -82,9 +82,9 @@ app.post('/api/apps', async (req, res) => {
       games = parsedResponse?.response?.games;
       // Games is undefined if profile or library is hidden
       if (games?.length) {
-        console.log(id, parsedResponse);
         redis.setEx(`library:${id}`, 172800, JSON.stringify(games));
       } else {
+        console.log(id, parsedResponse);
         return res.sendStatus(401);
       }
     }
