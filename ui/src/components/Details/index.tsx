@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import {useEffect, useRef, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import getGameDetails, {
@@ -9,6 +11,8 @@ import getGameDetails, {
 import CompatibilityModal from './components/CompatibilityModal';
 import Game from './components/Game';
 import './Details.css';
+
+dayjs.extend(relativeTime);
 
 interface DetailsState {
   url: string;
@@ -28,6 +32,9 @@ const Details = () => {
   const playableCount = useRef(0);
   const unsupportedCount = useRef(0);
   const unknownCount = useRef(0);
+  const [recentGames, setRecentGames] = useState<GameDetails[]>([]);
+  const [showUpdates, setShowUpdates] = useState(true);
+
   const navigate = useNavigate();
 
   const sortGames = (games: GameDetails[]) => {
@@ -87,6 +94,14 @@ const Details = () => {
     element?.scrollIntoView({behavior: 'smooth'});
   };
 
+  const jumpToGame = (appId: number) => {
+    const element = document.getElementById('game-' + appId);
+    element?.scrollIntoView({behavior: 'smooth'});
+  };
+
+  const categoryName = (game: GameDetails) =>
+    CompatibilityCategory[game.compatibility.category].toLowerCase();
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -95,9 +110,22 @@ const Details = () => {
         allGames.current = sortGames(data);
         setGames(allGames.current);
         setLoading(false);
+        const lastUpdatedList = [...allGames.current].sort(
+          (a, b) =>
+            (b?.compatibility?.test_timestamp || 0) -
+            (a.compatibility.test_timestamp || 0)
+        );
+        const trimmedRecentList = [];
+        const fourDaysAgo = dayjs().subtract(4, 'day');
+        for (const game of lastUpdatedList) {
+          if (dayjs.unix(game?.compatibility?.test_timestamp) >= fourDaysAgo) {
+            trimmedRecentList.push(game);
+          }
+        }
+        setRecentGames(trimmedRecentList);
       } catch (error) {
         navigate('/', {
-          state: {error: (error as any).message},
+          state: {error: (error as Error).message},
           replace: true,
         });
       }
@@ -249,6 +277,41 @@ const Details = () => {
               </div>
             </div>
           </div>
+          {recentGames.length > 0 && (
+            <>
+              <h2 className="recent-updates">Recent updates</h2>
+              <span
+                onClick={() => setShowUpdates(value => !value)}
+                className="updates-toggle"
+              >
+                {showUpdates ? 'hide' : 'show'}
+              </span>
+              <div
+                className="recent-updates-list"
+                style={{maxHeight: showUpdates ? 600 : 0}}
+              >
+                {recentGames.map(game => (
+                  <div
+                    onClick={() => jumpToGame(game.appId)}
+                    className="recent-updates-detail"
+                    key={game.appId}
+                  >
+                    <div className="compatibility-status">
+                      <img
+                        className="status-icon"
+                        src={`/${categoryName(game)}.svg`}
+                      />
+                      {categoryName(game)}
+                    </div>
+                    <div className="recent-update-name">{game.name}</div>
+                    <div className="update-time">
+                      {dayjs.unix(game.compatibility.test_timestamp).fromNow()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
           <div className="library-filter">
             <i className="search-icon fa-solid fa-magnifying-glass" />
             <input
@@ -259,21 +322,27 @@ const Details = () => {
               placeholder="Search for a game"
             />
           </div>
-          {games.map(game =>
-            game.appId !== -1 ? (
-              <Game
-                key={game.appId}
-                game={game}
-                setCompatibility={setCompatibility}
-              />
-            ) : (
-              <div
-                id={`${CompatibilityCategory[
-                  game.compatibility.category
-                ].toLowerCase()}-games`}
-              />
-            )
-          )}
+          <div className="library-list">
+            {games.map(game =>
+              game.appId !== -1 ? (
+                <Game
+                  key={game.appId}
+                  game={game}
+                  setCompatibility={setCompatibility}
+                />
+              ) : (
+                <div
+                  key={`${CompatibilityCategory[
+                    game.compatibility.category
+                  ].toLowerCase()}-games`}
+                  id={`${CompatibilityCategory[
+                    game.compatibility.category
+                  ].toLowerCase()}-games`}
+                  className="divider"
+                />
+              )
+            )}
+          </div>
         </>
       )}
     </div>

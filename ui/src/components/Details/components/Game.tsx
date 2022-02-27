@@ -14,7 +14,10 @@ interface GameProps {
 const Game: React.FC<GameProps> = ({game, setCompatibility}) => {
   const categoryName = CompatibilityCategory[game.compatibility.category];
   return (
-    <div className={`Game ${categoryName.toLowerCase()}`}>
+    <div
+      className={`Game ${categoryName.toLowerCase()}`}
+      id={`game-${game.appId}`}
+    >
       <a
         className="game-link"
         href={`https://store.steampowered.com/app/${game.appId}/`}

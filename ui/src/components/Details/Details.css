@@ -6,6 +6,16 @@
   margin-bottom: 15px;
 }
 
+.library-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 10px;
+}
+
+.divider {
+  grid-column: 1 / -1;
+}
+
 .search-icon {
   margin-left: 15px;
   font-size: 18px;
@@ -79,6 +89,43 @@
 .result-icon.item-unknown {
   background: #314252;
   flex-grow: 0;
+}
+
+.recent-updates {
+  display: inline-block;
+  margin-right: 12px;
+  margin-top: 0;
+}
+
+.updates-toggle {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.updates-toggle:hover {
+  text-decoration: underline;
+}
+
+.recent-updates-detail {
+  display: flex;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.recent-updates-list {
+  overflow: hidden;
+  transition: 0.7s;
+  margin-bottom: 15px;
+}
+
+.recent-update-name {
+  margin-left: 8px;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.update-time {
+  opacity: 0.6;
 }
 
 .sk-folding-cube {
