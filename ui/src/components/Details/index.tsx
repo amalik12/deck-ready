@@ -116,9 +116,9 @@ const Details = () => {
             (a.compatibility.test_timestamp || 0)
         );
         const trimmedRecentList = [];
-        const fourDaysAgo = dayjs().subtract(4, 'day');
+        const weekAgo = dayjs().subtract(1, 'week');
         for (const game of lastUpdatedList) {
-          if (dayjs.unix(game?.compatibility?.test_timestamp) >= fourDaysAgo) {
+          if (dayjs.unix(game?.compatibility?.test_timestamp) >= weekAgo) {
             trimmedRecentList.push(game);
           }
         }
