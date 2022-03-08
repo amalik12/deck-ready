@@ -147,6 +147,10 @@
   .result-item-name {
     font-size: 16px;
   }
+
+  .library-list {
+    grid-template-columns: 100%;
+  }
 }
 
 .sk-folding-cube .sk-cube {
